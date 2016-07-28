@@ -32,7 +32,11 @@ def index_page(collection,Output_Directory):
 	title = SubElement(head, 'title')
 	title.text = 'Index'
 	body = SubElement(root, 'body')
-	for x in xrange(0,28):
+	number_of_urls=28
+	if (len(collection.getElementsByTagName('url')) -1 < number_of_urls):
+		number_of_urls = len(collection.getElementsByTagName('url')) -1
+
+	for x in xrange(0,number_of_urls):
 		if (x%3==0):
 			div = SubElement(body, 'div')
 			p = SubElement(div, 'p')
@@ -47,7 +51,7 @@ def index_page(collection,Output_Directory):
 		a.text = cam_make[x]
 		p = SubElement(a, 'p')
 	#Saving to HTML file
-	htmlfile = open(Output_Directory+'/index.html','w+')
+	htmlfile = open(Output_Directory+'index.html','w+')
 	htmlfile.write(tostring(root))
 	htmlfile.close()
 	return
@@ -96,7 +100,7 @@ def make_pages(collection,Output_Directory):
 				p = SubElement(nav, 'p')
 
 		#Saving to HTML file
-		htmlfile = open(Output_Directory+'/make'+str(cam_make[x])+'.html','w+')
+		htmlfile = open(Output_Directory+'make'+str(cam_make[x])+'.html','w+')
 		htmlfile.write(tostring(root))
 		htmlfile.close()
 	return
@@ -145,7 +149,7 @@ def model_pages(collection,Output_Directory):
 		p = SubElement(nav, 'p')
 
 		#Saving to HTML file
-		htmlfile = open(Output_Directory+'/model'+str(models[x])+'.html','w+')
+		htmlfile = open(Output_Directory+'model'+str(models[x])+'.html','w+')
 		htmlfile.write(tostring(root))
 		htmlfile.close()
 	return
@@ -160,7 +164,7 @@ def main():
 		URL = str(sys.argv[1])
 		Output_Directory = ''
 	else:
-		Output_Directory = str(sys.argv[1])
+		Output_Directory = str(sys.argv[1])+"/"
 		if not os.path.exists(Output_Directory):
 			os.makedirs(Output_Directory)
 		URL = str(sys.argv[2])
