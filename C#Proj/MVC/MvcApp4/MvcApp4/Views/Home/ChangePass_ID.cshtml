@@ -1,0 +1,22 @@
+﻿@model MvcApp4.Models.MYUSER
+<form>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>MYUSER</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserID)
+            @Html.ValidationMessageFor(model => model.UserID)
+        </div>
+
+        <div>
+            <input type="submit" value="Submit"/>
+        </div>
+    </fieldset>
+}
+</form>

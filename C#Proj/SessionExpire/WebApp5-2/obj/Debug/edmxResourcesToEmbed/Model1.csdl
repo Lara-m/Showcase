@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB1Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DB1Entities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="PRODUCTs" EntityType="DB1Model.PRODUCT" />
+  </EntityContainer>
+  <EntityType Name="PRODUCT">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="String" Nullable="false" MaxLength="6" Unicode="false" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="Cost" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="SellingPrice" Type="Decimal" Precision="18" Scale="2" />
+  </EntityType>
+</Schema>

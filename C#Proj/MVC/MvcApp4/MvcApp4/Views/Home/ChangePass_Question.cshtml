@@ -1,0 +1,32 @@
+﻿@model MvcApp4.Models.MYUSER
+
+<h3>@ViewBag.Message</h3>
+
+<form>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>MYUSER</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SecQn)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SecQn)
+            @Html.ValidationMessageFor(model => model.SecQn)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SecAns)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SecAns)
+            @Html.ValidationMessageFor(model => model.SecAns)
+        </div>
+
+        <div>
+            <input type="submit" value="Submit"/>
+        </div>
+    </fieldset>
+}
+</form>

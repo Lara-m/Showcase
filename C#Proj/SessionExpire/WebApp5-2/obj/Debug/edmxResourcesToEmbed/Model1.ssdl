@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB1Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DB1ModelStoreContainer">
+    <EntitySet Name="PRODUCT" EntityType="DB1Model.Store.PRODUCT" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="PRODUCT">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="varchar" Nullable="false" MaxLength="6" />
+    <Property Name="Name" Type="varchar" MaxLength="30" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="Cost" Type="decimal" Scale="2" />
+    <Property Name="SellingPrice" Type="decimal" Scale="2" />
+  </EntityType>
+</Schema>
