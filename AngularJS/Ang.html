@@ -1,0 +1,135 @@
+<!--
+
+	AngularJS single page todo app
+
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<link rel="stylesheet" href="style.css">
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.js"></script>
+		
+		<script type="text/javascript">
+			var bank = null;
+
+			var app = angular.module('ToDo', []);
+			
+			app.controller('TodoCtrl', function TodoCtrl($scope) {
+				$scope.todos = [
+				{title: 'blah',completed: false},
+				{title: 'blah',completed: false}
+				];
+
+				$scope.$watch('todos', function () {
+					$scope.remainingCount = $scope.todos.filter(function(todo){
+						return todo.completed == false;
+					}).length;
+					$scope.completedCount = $scope.todos.length - $scope.remainingCount;
+					$scope.allChecked = !$scope.remainingCount;
+				}, true);
+
+				$scope.addTodo=function () {
+					if ($scope.newTodo == null) {return;}
+					var newTodo = {
+						title: $scope.newTodo.trim(),
+						completed: false
+					};
+					if (!newTodo.title) {return;}
+					$scope.todos.push(newTodo);
+					$scope.newTodo = '';
+				};
+
+				$scope.removeTodo=function (todo){
+					var index = $scope.todos.indexOf(todo);
+					$scope.todos.splice(index, 1);
+				};
+				$scope.toggleCompleted=function (todo){
+					todo.completed ? false: true ;
+				};
+				$scope.editTodo=function(todo){
+					$scope.editedTodo = todo;
+				};
+				$scope.saveEdits=function(todo, event){
+					todo.title = todo.title.trim();
+					$scope.editedTodo = null;
+				};
+				$scope.clearCompletedTodos=function(){
+					for (var i = 0; i < $scope.todos.length; i++) {
+						if ($scope.todos[i].completed == true) {
+							$scope.todos.splice(i,1);
+							i--;
+						}
+					}
+				};
+				$scope.show_active=function(){
+					if (bank==null) {bank = $scope.todos;}
+					var temp = bank.filter(function(todo){
+						return todo.completed == false;
+					});
+					if (temp!=null && temp.length > 0) {
+						$scope.todos = temp;
+					}
+				};
+				$scope.show_all=function(){
+					if (bank!=null) {
+						$scope.todos = bank;
+					}
+				};
+				$scope.show_completed=function(){
+					if (bank==null) {bank = $scope.todos;}
+					var temp = bank.filter(function(todo){
+						return todo.completed == true;
+					});
+					if (temp!=null) {
+						$scope.todos = temp;
+					}
+				};
+			});
+		</script>
+	</head>
+	<body ng-app="ToDo" ng-controller="TodoCtrl">
+		<section id="todoapp">
+			<header id="header">
+				<form id="todo-form" ng-submit="addTodo()">
+					<input id="new-todo" placeholder="Enter Todo List" ng-model="newTodo">
+				</form>
+			</header>
+			<section id="main" >
+				<ul id="todo-list">
+					<li ng-repeat="todo in todos" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
+						<div class="view">
+								<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">
+								<label ng-dblclick="editTodo(todo)">{{todo.title}}</label>
+								<button class="destroy" ng-click="removeTodo(todo)"></button>
+							</div>
+							<form ng-submit="saveEdits(todo, 'submit')">
+								<input class="edit" ng-trim="false" ng-model="todo.title" todo-focus="todo == editedTodo">
+							</form>
+					</li>
+				</ul>
+			</section>
+			<footer id="footer" ng-show="todos.length" ng-cloak>
+					<span id="todo-count"><strong>{{remainingCount}}</strong>
+						<ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
+					</span>
+					<ul id="filters">
+						<li>
+							<a  ng-click="show_all()" href="#/">All</a>
+						</li>
+						<li>
+							<a ng-click="show_active()" href="#/active" ng-show="remainingCount">Active</a>
+						</li>
+						<li>
+							<a  ng-click="show_completed()" href="#/completed" ng-show="completedCount">Completed</a>
+						</li>
+					</ul>
+					<button id="clear-completed" ng-click="clearCompletedTodos()" ng-show="completedCount">Clear completed</button>
+				</footer>
+		</section>
+	</body>
+</html>
