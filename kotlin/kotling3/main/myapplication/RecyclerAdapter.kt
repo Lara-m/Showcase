@@ -1,4 +1,4 @@
-package inc.awesome.myapplication
+package myapplication
 
 
 /**
