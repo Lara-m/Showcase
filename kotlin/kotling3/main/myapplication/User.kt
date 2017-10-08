@@ -1,4 +1,4 @@
-package inc.awesome.myapplication
+package myapplication
 
 /**
  * Created by lara on 19/09/17.
