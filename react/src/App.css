@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+  /*
+  align-items: center;
+  alignment-baseline: central;
+  align-content: center;
+  align-self: center
+  */
+}
+
+.App-header {
+  /*background-color: #222;*/
+  height: 50px;
+  padding: 20px;
+  padding-bottom: 120px;
+  text-align: center;
+  /*color: white;*/
+}
+
+.App-title {
+  font-size: 5.0em;
+}
+
+.Card {
+  font-size: x-large;
+  text-align: center;
+  text-align-last: center;
+  padding: 20px;
+
+}
