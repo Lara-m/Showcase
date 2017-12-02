@@ -7,30 +7,42 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal:false,
-      modal_todo:{title:'', desc: '', state:''},
+      showModal : false,
+      modal_todo : { title:'', desc: '', state:'To Do' },
       todolist: [
-      	{title:'sd', desc: 'jth', state:'info'},
-        {title:'fhf', desc: 'dfg', state:'warning'},
-        {title:'dgf', desc: 'owirs', state:'success'},
-      ]
+      	{title:'write the test for to do', desc: '1', state:'To Do'},
+        {title:'write the test for doing', desc: '2', state:'Doing'},
+        {title:'write the test for done', desc: '3', state:'Done'},
+      ],
+      state_color : {
+        'To Do'   :   'info',
+        'Doing'   :   'warning',
+        'Done'    :   'success',
+      },
+      current_open_modal_key : null
     };
     this.close_modal = this.close_modal.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.getValidationState = this.getValidationState.bind(this)
+    //this.getValidationState = this.getValidationState.bind(this)
     this.save = this.save.bind(this)
     this.new = this.new.bind(this)
     this.delete = this.delete.bind(this)
   }
   
-  open_modal(todo)  { 
+  open_modal(todo,key)  { 
     this.setState({
       modal_todo:{title:todo.title, desc: todo.desc, state:todo.state},
+      showModal : true,
+      current_open_modal_key : key
     })
-    this.setState({ showModal: true })
   }
 
-  close_modal() { this.setState({ showModal: false }) }  
+  close_modal() { 
+    this.setState({ showModal: false,
+      modal_todo : {title:'', desc: '', state:'To Do'} ,
+      current_open_modal_key : null
+    }) 
+  }  
 
   getValidationState() {
     const length = this.state.modal_todo.title.length
@@ -51,7 +63,7 @@ class App extends Component {
         new_modal = { title: this.state.modal_todo.title, desc: val, state: this.state.modal_todo.state}
         break
       case 'formState':
-        new_modal = { title: this.state.modal_todo.title, desc: this.state.modal_todo.desc , state:val}
+        new_modal = { title: this.state.modal_todo.title, desc: this.state.modal_todo.desc , state: val}
         break
       default:
         break
@@ -59,15 +71,10 @@ class App extends Component {
     this.setState({ modal_todo: new_modal})
   }
 
-
   new(){
-    this.setState({
-      modal_todo:{title:'', desc: '', state:''},
-    })
-    this.open_modal(this.state.modal_todo)
+    this.open_modal(this.state.modal_todo,null)
   }
 
-  //complete this
   delete(){
     var array = this.state.todolist
     var index = array.indexOf(this.state.modal_todo)
@@ -76,11 +83,18 @@ class App extends Component {
     this.close_modal()
   }
 
-  save(e){
-    //this.setState({ modal_todo.state: e.target.value });
-    var newArray = this.state.todolist.slice()
-    newArray.push(e)
-    this.setState({todolist:newArray})
+  save(e,key=null){
+    key = this.state.current_open_modal_key
+    if (key==null) {
+      var newArray = this.state.todolist.slice()
+      newArray.push(e)
+      this.setState({todolist:newArray})
+    }
+    else {
+      const items = this.state.todolist;
+      items[key] = e;
+      this.forceUpdate();
+    }
     this.close_modal()
   }
 
@@ -91,9 +105,9 @@ class App extends Component {
         <ListGroupItem
           key={key}
           className="Card" 
-          bsStyle={todo.state}
-          onClick={() => this.open_modal(todo)}
-        >{todo.title} </ListGroupItem>
+          bsStyle={this.state.state_color[todo.state]}
+          onClick={() => this.open_modal(todo,key)}
+        >{todo.title}</ListGroupItem>
       )}
        <ListGroupItem
           key=""
@@ -110,12 +124,12 @@ class App extends Component {
     return(
       <Modal show={this.state.showModal} onHide={this.close_modal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit To Do</Modal.Title>
+          <Modal.Title>To Do</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
             <FormGroup controlId="formTitle"
-             validationState={this.getValidationState}
+             validationState={this.getValidationState()}
              >
               <ControlLabel>What</ControlLabel>
               <FormControl
